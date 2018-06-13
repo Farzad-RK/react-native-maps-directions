@@ -159,7 +159,7 @@ class MapViewDirections extends Component {
 						duration: route.legs.reduce((carry, curr) => {
 							return carry + curr.duration.value;
 						}, 0) / 60,
-						coordinates: this.decode(route.overview_polyline.points),
+						coordinates: output,
 						fare: route.fare
 					});
 
