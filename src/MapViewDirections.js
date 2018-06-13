@@ -133,9 +133,25 @@ class MapViewDirections extends Component {
 				}
 
 				if (json.routes.length) {
-
+					/** 
+					For more accurate results the path must be derived from steps 
+                                        as we can see each has polyline attirbute wich is a smoothed path 
+					according to Google's docs. 
+					the time complexity has growed as we can see for greater good :)
+					
+					**/
+                                        let output = [];
 					const route = json.routes[0];
-
+                                        var legs = route.legs;
+                                        for (i = 0; i < legs.length; i++) {
+                                        var steps = legs[i].steps;
+                                        for (j = 0; j < steps.length; j++) {
+                                        var nextSegment = this.decode(steps[j].polyline.points)
+                                          for (k = 0; k < nextSegment.length; k++) {
+                                           output.push(nextSegment[k])
+                                               }
+                                            }
+                                        }
 					return Promise.resolve({
 						distance: route.legs.reduce((carry, curr) => {
 							return carry + curr.distance.value;
